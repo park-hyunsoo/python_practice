@@ -1,5 +1,6 @@
 from django.db import models
 from django_countries.fields import CountryField
+from django.urls import reverse
 from core import models as core_models
 
 # Create your models here.
@@ -52,7 +53,7 @@ class Room(core_models.TimeStampedModel):
     city = models.CharField(max_length=80)
     price = models.IntegerField()
     address = models.CharField(max_length=140)
-    guests = models.IntegerField()
+    guests = models.IntegerField(help_text="How many people will be staying?")
     beds = models.IntegerField()
     bedrooms = models.IntegerField()
     baths = models.IntegerField()
@@ -83,3 +84,6 @@ class Room(core_models.TimeStampedModel):
 
             return round(all_ratings / len(all_reviews), 2)
         return 0
+
+    def get_absolute_url(self):
+        return reverse("rooms:detail", kwargs={"pk":self.pk})
